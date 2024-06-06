@@ -1,0 +1,84 @@
+create database e_commerce;
+use e_commerce;
+
+create table Marche(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nomeM varchar(30) not null unique
+);
+
+create table Categorie(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    nomeC varchar(30) not null unique
+);
+
+create table Prodotti(
+    id int primary key AUTO_INCREMENT,
+    nomeP varchar(30) not null,
+    prezzo decimal(8,2) not null,
+    quantita int not null,
+    id_categoria int, 
+    id_marca int,
+    CONSTRAINT fk_id_categoria
+    FOREIGN KEY (id_categoria)
+    REFERENCES categorie(id),
+    CONSTRAINT fk_id_marca
+    FOREIGN KEY (id_marca)
+    REFERENCES marche(id)
+);
+
+create table ruoli(
+     id int PRIMARY KEY AUTO_INCREMENT,
+    nome_ruolo varchar(30) not null unique
+);
+
+create table accounts(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    email varchar(50) not null, 
+    username varchar(30) not null,
+    password varchar(30) not null,
+    id_ruolo int,
+    CONSTRAINT fk_id_ruolo
+    FOREIGN KEY (id_ruolo)
+    REFERENCES ruoli(id)
+);
+
+create table utenti(
+     id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(30) not null,
+    cognome varchar(30) not null,
+    codice_fiscale char(16) not null,
+    cap char(5) not null,
+    provincia char(2) not null,
+    citta varchar(30) not null,
+    via varchar(50) not null,
+    numero_civico int not null,
+    id_account int unique,
+    CONSTRAINT fk_id_account
+    FOREIGN KEY (id_account)
+    REFERENCES accounts(id)
+); 
+
+create view v_full_account AS
+select u.id, a.username, r.nome_ruolo, a.email, u.nome, u.cognome, u.codice_fiscale, u.cap, u.provincia, 
+u.citta, u.via, u.numero_civico
+From utenti as u INNER JOIN accounts as a 
+ON
+a.id = u.id_account
+INNER JOIN ruoli as r 
+ON 
+r.id = a.id_ruolo;
+
+create view v_pr_mar_cat_id AS
+select p.id, p.nomeP, p.prezzo, p.quantita, m.nomeM, c.nomeC
+from prodotti as p INNER JOIN marche as m 
+ON
+m.id = p.id_marca 
+INNER JOIN categorie as c 
+on 
+c.id = p.id_categoria;
+
+create view v_accounts_ruoli as 
+select a.id, a.email, a.username, r.nome_ruolo
+from accounts as a inner join ruoli as r 
+ON 
+r.id = a.id_ruolo;

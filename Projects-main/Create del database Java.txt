@@ -1,0 +1,10 @@
+create database primo_jdbc
+
+create table utenti (
+	id serial primary key,
+	nome varchar(30),
+	cognome varchar(30),
+	cf varchar(30),
+	dataNascita date,
+	stipendio decimal (8,2)
+);

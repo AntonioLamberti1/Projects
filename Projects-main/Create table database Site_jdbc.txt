@@ -1,0 +1,21 @@
+Create database db_servlet_gestionale;
+
+MySQL
+create table utenti (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	nome varchar(30),
+	cognome varchar(30),
+	cf varchar(16),
+	datanascita date,
+	stipendio double
+)
+
+Postgres
+create table utenti (
+	id serial primary key,
+	nome varchar(30),
+	cognome varchar(30),
+	cf varchar(16),
+	datanascita date,
+	stipendio double
+)

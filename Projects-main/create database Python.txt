@@ -1,0 +1,5 @@
+Per MYSQL
+Create database test
+
+Per Postgres
+Creare database test2
